@@ -1061,9 +1061,6 @@ export default function App() {
           <h3 style={{margin:'0 0 15px 0'}}>Outhouse - Vote!</h3>
           {!allVotesSubmitted ? (
             <>
-              <p style={{fontSize:'12px',color:'#555',margin:'0 0 10px 0'}}>
-                Each player votes privately on their own screen. Votes are revealed after everyone submits.
-              </p>
               <div style={{marginBottom:'15px'}}>
                 <h4 style={{margin:'5px 0'}}>Your vote ({myName})</h4>
                 <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px'}}>
@@ -1118,9 +1115,20 @@ export default function App() {
               {players.map(player => (
                 <div key={player} style={{marginBottom:'15px'}}>
                   <h4 style={{margin:'5px 0'}}>{player}</h4>
-                  <div style={{marginTop:'5px',fontSize:'11px',color:'#666'}}>
-                    Selected: {(voteSelections[player] || []).join(', ') || 'No cards selected'}
-                  </div>
+                  {(voteSelections[player] || []).length > 0 ? (
+                    <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'6px',marginTop:'6px'}}>
+                      {(voteSelections[player] || []).map((card, index) => {
+                        const displayCard = card.startsWith('Wildcard_') ? 'Wildcard' : card;
+                        return (
+                          <div key={`${player}-${card}-${index}`} style={{border:'2px solid #ccc',padding:'3px',borderRadius:'4px',background:'white'}}>
+                            <img src={IMAGES[displayCard]} style={{width:'100%',display:'block'}} alt={card}/>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div style={{marginTop:'5px',fontSize:'11px',color:'#666'}}>No cards selected</div>
+                  )}
                 </div>
               ))}
               <div style={{marginTop:'12px',fontSize:'12px',color:'#555'}}>
